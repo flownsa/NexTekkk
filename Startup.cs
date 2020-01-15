@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,17 +28,32 @@ namespace Nextekk
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            // services.AddAuthorization(options =>
+            // {
+            //     options.AddPolicy("Admin", policy =>
+            //     policy.Requirements.Add(new NextekkClaim(21)));
+            // });
+            
+            services.AddDbContext<Models.NextekkDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("NDB")));
+
+               // Identity Services
+            services.AddTransient<EmployeeStore>();
+            services.AddTransient<RoleStore>();
+
+            // Add identity
+            services.AddIdentity<Employee, Role>()
+            .AddEntityFrameworkStores<NextekkDBContext>();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            
-            services.AddDbContext<Models.NextekkDBContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("NDB")));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,7 +73,7 @@ namespace Nextekk
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseAuthentication();
             app.UseMvc();
         }
     }
