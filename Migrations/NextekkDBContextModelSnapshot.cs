@@ -142,8 +142,6 @@ namespace Nextekk.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
-                    b.Property<bool>("admin");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OtherInfoId");

@@ -18,11 +18,6 @@
 /home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Nextekk.TagHelpers.input.cache
 /home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Nextekk.TagHelpers.output.cache
 /home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Nextekk.RazorCoreGenerate.cache
-/home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Pages/Admin/Create.g.cshtml.cs
-/home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Pages/Admin/Delete.g.cshtml.cs
-/home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Pages/Admin/Details.g.cshtml.cs
-/home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Pages/Admin/Edit.g.cshtml.cs
-/home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Pages/Admin/Index.g.cshtml.cs
 /home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Nextekk.RazorTargetAssemblyInfo.cs
 /home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Nextekk.Views.pdb
 /home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Pages/Shared/_CookieConsentPartial.g.cshtml.cs
@@ -41,3 +36,8 @@
 /home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Areas/Identity/Pages/_ValidationScriptsPartial.g.cshtml.cs
 /home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Areas/Identity/Pages/_ViewImports.g.cshtml.cs
 /home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Areas/Identity/Pages/_ViewStart.g.cshtml.cs
+/home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Pages/Admin/Create.g.cshtml.cs
+/home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Pages/Admin/Delete.g.cshtml.cs
+/home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Pages/Admin/Details.g.cshtml.cs
+/home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Pages/Admin/Edit.g.cshtml.cs
+/home/juwonlona/Nextekk/obj/Debug/netcoreapp2.2/Razor/Pages/Admin/Index.g.cshtml.cs

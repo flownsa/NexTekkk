@@ -44,8 +44,21 @@ namespace Nextekk
             services.AddTransient<RoleStore>();
 
             // Add identity
-            services.AddIdentity<Employee, Role>()
-            .AddEntityFrameworkStores<NextekkDBContext>();
+            services.AddIdentity<Employee, Role>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            }).AddEntityFrameworkStores<NextekkDBContext>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Login";
+                options.LogoutPath = "/Logout";
+                options.AccessDeniedPath = "/AccessDenied";
+            });
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -74,6 +87,7 @@ namespace Nextekk
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+
             app.UseMvc();
         }
     }

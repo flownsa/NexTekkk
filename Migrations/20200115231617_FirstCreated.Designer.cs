@@ -10,7 +10,7 @@ using Nextekk.Models;
 namespace Nextekk.Migrations
 {
     [DbContext(typeof(NextekkDBContext))]
-    [Migration("20200114215721_FirstCreated")]
+    [Migration("20200115231617_FirstCreated")]
     partial class FirstCreated
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,8 +143,6 @@ namespace Nextekk.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
-
-                    b.Property<bool>("admin");
 
                     b.HasKey("Id");
 

@@ -18,38 +18,34 @@ namespace Nextekk.Models
         // The role name this employee belong to
         // private static int IdSeed = 5000; 
         
-        private bool IsAdmin; // = false;
-        public bool admin 
-        {
+        private bool admin = false; // = false;
+        public bool IsAdmin
+        {    
             get
             {
-                return IsAdmin;
+                return admin;
             }
-            private set{ setAdmin(); }
         }
 
         public void setAdmin()
         {
-
             if (IsAdmin == true)
             {
-                IsAdmin = false;
+                admin = false;
             }
             else
             {
-                IsAdmin = false;
+                admin = true;
             }
-
-
         }
         
         
-        public  Employee()    // assign default identity id and set default admin value
+        public  Employee()  
         {
             // IdSeed++;        
             // EmployeeId = IdSeed.ToString(); 
                 
-            IsAdmin = false;
+            admin = false;    // just to make sure
             // EmployeeId = Id;
         }   
         
@@ -62,11 +58,18 @@ namespace Nextekk.Models
         public string LastName { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{yyyy-mm-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Dob { get; set; }
 
-        // public enum Sex { Female=1, Male=0 }
-        // public enum MaritalStatus { Single, Married, Divorced, Seperated};
+        class Enumerates 
+        { 
+            public enum Sex{ Female=1, Male=0 } 
+            public enum MaritalStatus { Single, Married, Divorced, Seperated};
+        }
+        Enumerates.Sex Sex { get; set; }
+        Enumerates.MaritalStatus MaritalStatus { get; set; }
+        
+        
         [Required]
         public string Password { get; set; }
         

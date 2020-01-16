@@ -38,7 +38,6 @@ namespace Nextekk.Migrations
                     SecurityStamp = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    admin = table.Column<bool>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 100, nullable: false),
                     LastName = table.Column<string>(maxLength: 100, nullable: false),
                     Dob = table.Column<DateTime>(type: "date", nullable: false),

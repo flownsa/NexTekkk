@@ -24,8 +24,8 @@ namespace Nextekk.Areas.Identity.Pages.Account
         public RegisterModel(
             UserManager<Employee> userManager,
             SignInManager<Employee> signInManager,
-            ILogger<RegisterModel> logger)
-            // IEmailSender emailSender)
+            ILogger<RegisterModel> logger)//,
+            //IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -57,7 +57,7 @@ namespace Nextekk.Areas.Identity.Pages.Account
 
             [Required]
             [DataType(DataType.Date)]
-            [DisplayFormat(DataFormatString = "{yyyy-mm-dd}", ApplyFormatInEditMode = true)]
+            [DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}", ApplyFormatInEditMode = true)]
             [Display(Name = "Date Of Birth")]
             public string Dob { get; set; }
 
@@ -88,24 +88,37 @@ namespace Nextekk.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new Employee { UserName = Input.Email, Email = Input.Email };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var staff = new Employee 
+                { 
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    UserName = Input.Email, 
+                    Password = Input.Password,
+                    // Sex = Input.Sex;
+                    // Sex = Input.MaritalStatus;
+                    Dob = DateTime.Parse(Input.Dob).Date,
+                    NoOfChildren = int.Parse(Input.NoOfChildren),
+                    Email = Input.Email,
+                };
+                var result = await _userManager.CreateAsync(staff, Input.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation("Staff created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(staff);
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { userId = user.Id, code = code },
+                        values: new { userId = staff.Id, code = code },
                         protocol: Request.Scheme);
 
                     // await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        // $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _signInManager.SignInAsync(staff, isPersistent: false);
                     return LocalRedirect(returnUrl);
+                    // return Redirect(returnUrl);
+
                 }
                 foreach (var error in result.Errors)
                 {
