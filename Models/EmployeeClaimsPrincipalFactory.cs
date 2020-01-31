@@ -39,24 +39,24 @@ namespace Nextekk.Models
             }
             
 //      Generate claims as 'uname' from Employee Class - The ClaimPrincipal
-        public override async Task<ClaimsPrincipal> CreateAsync(Employee employee) 
-        {
-            // IdentityPrincipal to use as claims handler
-            var principal = await base.CreateAsync(employee);
-            if (!string.IsNullOrWhiteSpace(employee.FirstName))
-            {
-                ((ClaimsIdentity)principal.Identity).AddClaims(
-                    new[] 
-                    {
-                        new Claim(ClaimTypes.GivenName, employee.FirstName)
-                        // new Claim(ClaimTypes.UserName, employee.FirstName)
+        // public override async Task<ClaimsPrincipal> CreateAsync(Employee employee) 
+        // {
+        //     // IdentityPrincipal to use as claims handler
+        //     var principal = await base.CreateAsync(employee);
+        //     if (!string.IsNullOrWhiteSpace(employee.FirstName))
+        //     {
+        //         ((ClaimsIdentity)principal.Identity).AddClaims(
+        //             new[] 
+        //             {
+        //                 new Claim(ClaimTypes.GivenName, employee.FirstName)
+        //                 // new Claim(ClaimTypes.UserName, employee.FirstName)
 
-                    });
-            }
-            return principal;
-        }
+        //             });
+        //     }
+        //     return principal;
+        // }
 
-        //      Generate claims as 'uname' from Employee Class - The ClaimPrincipal
+        //      Generate claims 
         protected override async Task<ClaimsIdentity> GenerateClaimsAsync(Employee employee) 
         {
             // call GenerateClaimsAsync from base class as handler for IdentityPrincipal 
@@ -65,8 +65,8 @@ namespace Nextekk.Models
             // {
                 // var roles = await UserManager.GetRolesAsync(employee);   // all roles associated with employee
               
-            identity.AddClaim(new Claim("UserName", employee.UserName ?? ""));   // adds claim type uname to Claims
-            // identity.AddClaim(new Claim(NextekkClaim.IsAdmin, employee.IsAdmin.ToString() ?? ""));   // adds claim type IsAdmin to Claims        
+            identity.AddClaim(new Claim("Activated", employee.IsActivated ?? ""));   // adds claim type uname to Claims
+            identity.AddClaim(new Claim("Admin", employee.IsAdmin?? ""));   // adds claim type uname to Claims
 
             return identity;
 

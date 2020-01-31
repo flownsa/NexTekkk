@@ -61,7 +61,8 @@ namespace Nextekk
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-            }).AddDefaultTokenProviders().AddEntityFrameworkStores<NextekkDBContext>(); 
+            }).AddDefaultTokenProviders().AddEntityFrameworkStores<NextekkDBContext>()
+            .AddClaimsPrincipalFactory<EmployeeClaimsPrincipalFactory>(); 
             // services.AddControllersWithViews();
             // services.AddRazorPages();
 
