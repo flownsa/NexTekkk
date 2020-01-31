@@ -3046,6 +3046,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/juwonlona/Nextekk/Areas/Identity/Pages/Account/Personal.cshtml",
+      "TargetPath": "Areas/Identity/Pages/Account/Personal.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/juwonlona/Nextekk/Areas/Identity/Pages/_ViewStart.cshtml",
       "TargetPath": "Areas/Identity/Pages/_ViewStart.cshtml",
       "FileKind": "mvc"

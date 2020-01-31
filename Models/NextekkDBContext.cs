@@ -42,12 +42,12 @@ namespace Nextekk.Models
                 // entity.Property(e => e.Id)
                 // .entity.ValueGeneratedNever();
                 entity.Ignore(ignore => ignore.ConcurrencyStamp);
-                entity.Ignore(ignore => ignore.NormalizedUserName);
+                // entity.Ignore(ignore => ignore.NormalizedUserName);
                 entity.Ignore(ignore => ignore.EmailConfirmed); 
                 entity.Ignore(ignore => ignore.NormalizedEmail);
                 // entity.Ignore(ignore => ignore.PasswordHash);
                 // entity.Ignore(ignore => ignore.SecurityStamp);
-            //     entity.Ignore(ignore => ignore.PhoneNumberConfirmed);
+                entity.Ignore(ignore => ignore.PhoneNumberConfirmed);
                 entity.Ignore(ignore => ignore.TwoFactorEnabled);
                 entity.Ignore(ignore => ignore.LockoutEnd);
                 entity.Ignore(ignore => ignore.LockoutEnabled);

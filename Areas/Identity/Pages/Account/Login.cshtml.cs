@@ -4,7 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,17 +20,18 @@ namespace Nextekk.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<Employee> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly Nextekk.Models.NextekkDBContext _db;
 
-        public LoginModel(SignInManager<Employee> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<Employee> signInManager, ILogger<LoginModel> logger, Nextekk.Models.NextekkDBContext db)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _db = db;
+
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
-
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -38,8 +41,7 @@ namespace Nextekk.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            public string UserName { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
@@ -49,36 +51,42 @@ namespace Nextekk.Areas.Identity.Pages.Account
             public bool RememberMe { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public void OnGet(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
-            returnUrl = returnUrl ?? Url.Content("~/");
-
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
             ReturnUrl = returnUrl;
-        }
 
+        }
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
 
+
+
+            // var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            // var claim = claimsIdentity.FindFirst(ClaimTypes.IsActivated);
+
             if (ModelState.IsValid)
-            {
+            {   
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, false);
+                
+
+                // var id = _db.Employees.FirstOrDefaultAsync(m => m.UserName == Input.UserName).Id.ToString();  
+
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+
+                var staff = await _db.Employees.FirstOrDefaultAsync(m => m.UserName == Input.UserName);  // Get user data for claims
+
+                _logger.LogInformation("User logged in.");
+                    // ~/Identity/Account/Personal?id
+                    return Redirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {

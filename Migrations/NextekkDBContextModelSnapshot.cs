@@ -126,6 +126,9 @@ namespace Nextekk.Migrations
 
                     b.Property<int>("NoOfChildren");
 
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
+
                     b.Property<string>("OtherInfoId");
 
                     b.Property<string>("Password")
@@ -135,14 +138,17 @@ namespace Nextekk.Migrations
 
                     b.Property<string>("PhoneNumber");
 
-                    b.Property<bool>("PhoneNumberConfirmed");
-
                     b.Property<string>("SecurityStamp");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("OtherInfoId");
 

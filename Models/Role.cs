@@ -10,7 +10,11 @@ namespace Nextekk.Models
     [Table("Role")]
     public partial class Role : IdentityRole<string>
     { 
-        public Role () :  base()  // to be used to access IdentityRole in this Role class
+        public Role () : base()
+        { 
+            
+        }
+        public Role (string rolename) : base (rolename)  // to be used to access IdentityRole in this Role class
         { 
             
             // rolename = Name;  // using identity variables as these

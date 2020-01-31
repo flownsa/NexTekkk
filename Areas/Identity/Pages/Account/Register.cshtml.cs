@@ -19,17 +19,21 @@ namespace Nextekk.Areas.Identity.Pages.Account
         private readonly SignInManager<Employee> _signInManager;
         private readonly UserManager<Employee> _userManager;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly RoleManager<Role> _roleManager;
+        
         // private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<Employee> userManager,
             SignInManager<Employee> signInManager,
-            ILogger<RegisterModel> logger)//,
-            //IEmailSender emailSender)
+            ILogger<RegisterModel> logger//,
+            //IEmailSender emailSender),
+            ,RoleManager<Role> roleManager)
         {
+            _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
-            _logger = logger;
+            _roleManager = roleManager;
             // _emailSender = emailSender;
         }
 
@@ -49,6 +53,11 @@ namespace Nextekk.Areas.Identity.Pages.Account
             [StringLength(50)]
             [Display(Name = "LastName")]
             public string LastName { get; set; }
+
+            [Required]
+            [StringLength(50)]
+            [Display(Name = "UserName")]
+            public string UserName { get; set; }
 
             [Required]
 
@@ -92,25 +101,43 @@ namespace Nextekk.Areas.Identity.Pages.Account
                 { 
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
-                    UserName = Input.Email, 
+                    UserName = Input.UserName,
+                    Email = Input.Email, 
                     Password = Input.Password,
-                    // Sex = Input.Sex;
-                    // Sex = Input.MaritalStatus;
-                    Dob = DateTime.Parse(Input.Dob).Date,
-                    NoOfChildren = int.Parse(Input.NoOfChildren),
-                    Email = Input.Email,
+                    EmailConfirmed = false,
+                    // Sex = Input.Sex;  // radio buttons
+                    // Sex = Input.MaritalStatus;  //radio buttons 
+                    Dob = DateTime.Parse(Input.Dob).Date, 
+                    NoOfChildren = int.Parse(Input.NoOfChildren)                    
                 };
+                
                 var result = await _userManager.CreateAsync(staff, Input.Password);
                 if (result.Succeeded)
+                // Add roles by default
                 {
+                    if ( !await _roleManager.RoleExistsAsync(AttributeGen.Admin))
+                    {
+                        await _roleManager.CreateAsync(new Role(AttributeGen.Admin));
+                    } 
+                    
+                    if ( !await _roleManager.RoleExistsAsync(AttributeGen.StaffMember))
+                    {
+                        await _roleManager.CreateAsync(new Role(AttributeGen.StaffMember));
+                    }
+
+                    if ( !await _roleManager.RoleExistsAsync(AttributeGen.NoPermit))
+                    {
+                        await _roleManager.CreateAsync(new Role(AttributeGen.NoPermit));
+                    }
+                    await _userManager.AddToRoleAsync(staff, AttributeGen.NoPermit); // default permission for new user
                     _logger.LogInformation("Staff created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(staff);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = staff.Id, code = code },
-                        protocol: Request.Scheme);
+                    // var code = await _userManager.GenerateEmailConfirmationTokenAsync(staff);
+                    // var callbackUrl = Url.Page(
+                    //     "/Account/ConfirmEmail",
+                    //     pageHandler: null,
+                    //     values: new { userId = staff.Id, code = code },
+                    //     protocol: Request.Scheme);
 
                     // await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         // $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

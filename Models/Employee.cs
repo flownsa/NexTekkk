@@ -19,23 +19,45 @@ namespace Nextekk.Models
         // private static int IdSeed = 5000; 
         
         private bool admin = false; // = false;
-        public bool IsAdmin
+        public string IsAdmin
         {    
             get
             {
-                return admin;
+                return admin.ToString();
             }
         }
 
         public void setAdmin()
         {
-            if (IsAdmin == true)
+            if (admin == true)
             {
                 admin = false;
             }
             else
             {
                 admin = true;
+            }
+        }
+
+
+        private bool isActivated = false; // = false;
+        public string IsActivated
+        {    
+            get
+            {
+                return isActivated.ToString();
+            }
+        }
+
+        public void setIsActivated()
+        {
+            if (isActivated == true)
+            {
+                isActivated = false;
+            }
+            else
+            {
+                isActivated = true;
             }
         }
         
@@ -45,7 +67,8 @@ namespace Nextekk.Models
             // IdSeed++;        
             // EmployeeId = IdSeed.ToString(); 
                 
-            admin = false;    // just to make sure
+            admin = false;  
+            isActivated = false;
             // EmployeeId = Id;
         }   
         
@@ -56,18 +79,19 @@ namespace Nextekk.Models
         [Required]
         [StringLength(50)]
         public string LastName { get; set; }
+        // public string UserName { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Dob { get; set; }
 
-        class Enumerates 
-        { 
-            public enum Sex{ Female=1, Male=0 } 
-            public enum MaritalStatus { Single, Married, Divorced, Seperated};
-        }
-        Enumerates.Sex Sex { get; set; }
-        Enumerates.MaritalStatus MaritalStatus { get; set; }
+        // class Enumerates 
+        // { 
+        //     public enum Sex{ Female=1, Male=0 } 
+        //     public enum MaritalStatus { Single, Married, Divorced, Seperated};
+        // }
+        AttributeGen.Sex Sex { get; set; }
+        AttributeGen.MaritalStatus MaritalStatus { get; set; }
         
         
         [Required]

@@ -36,7 +36,7 @@ namespace Nextekk.Pages.Admin
             _context.Employees.Add(Employee);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Admin/Index");
         }
     }
 }

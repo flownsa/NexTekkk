@@ -10,8 +10,8 @@ using Nextekk.Models;
 namespace Nextekk.Migrations
 {
     [DbContext(typeof(NextekkDBContext))]
-    [Migration("20200115231617_FirstCreated")]
-    partial class FirstCreated
+    [Migration("20200127082408_FirstMigration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -128,6 +128,9 @@ namespace Nextekk.Migrations
 
                     b.Property<int>("NoOfChildren");
 
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
+
                     b.Property<string>("OtherInfoId");
 
                     b.Property<string>("Password")
@@ -137,14 +140,17 @@ namespace Nextekk.Migrations
 
                     b.Property<string>("PhoneNumber");
 
-                    b.Property<bool>("PhoneNumberConfirmed");
-
                     b.Property<string>("SecurityStamp");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("OtherInfoId");
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -13,6 +14,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nextekk.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace Nextekk
 {
@@ -35,7 +38,13 @@ namespace Nextekk
             //     options.AddPolicy("Admin", policy =>
             //     policy.Requirements.Add(new NextekkClaim(21)));
             // });
-            
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             services.AddDbContext<Models.NextekkDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("NDB")));
 
@@ -46,26 +55,31 @@ namespace Nextekk
             // Add identity
             services.AddIdentity<Employee, Role>(options =>
             {
+                options.SignIn.RequireConfirmedEmail = false;
                 options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 5;
+                options.Password.RequiredLength = 4;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-            }).AddEntityFrameworkStores<NextekkDBContext>();
+            }).AddDefaultTokenProviders().AddEntityFrameworkStores<NextekkDBContext>(); 
+            // services.AddControllersWithViews();
+            // services.AddRazorPages();
 
-            services.ConfigureApplicationCookie(options =>
-            {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
                 options.LoginPath = "/Login";
                 options.LogoutPath = "/Logout";
                 options.AccessDeniedPath = "/AccessDenied";
             });
 
-            services.Configure<CookiePolicyOptions>(options =>
+            services.Configure<IdentityOptions>(options=> 
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.User.RequireUniqueEmail = false;
+                options.Lockout.AllowedForNewUsers = false;
+                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
             });
+
+            
 
         }
 
